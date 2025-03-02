@@ -14,7 +14,7 @@ export default function Book() {
                     q: 'the', // Search for books related to JavaScript
                     maxResults: 10,
                     startIndex: page * 10,
-                    key: 'AIzaSyApPaekQl7Op8eJs1bT6PmldhWF1uMAHtI'
+                    key: 'XYZ'
                 }
             });
 
