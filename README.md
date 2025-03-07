@@ -6,9 +6,8 @@
 <pre>
 npm install
 npm install tailwindcss @tailwindcss/vite
-  npm install @radix-ui/react-avatar
-  npx shadcn@latest add avatar
-
+npm install @radix-ui/react-avatar
+npx shadcn@latest add avatar
 npm install lucide-react
 npm install react-router-dom
 npm install axios
