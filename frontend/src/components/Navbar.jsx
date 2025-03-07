@@ -1,15 +1,17 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { faCircleUser, faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
   return (
     <header className="flex flex-col md:flex-row items-center justify-between max-w-full md:max-w-6xl px-4 md:px-6 py-6 mx-auto bg-gray-900">
       {/* Logo */}
-      <a href="/" className="text-white z-10">
-        <h1 className="text-2xl font-extrabold tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Cover To Cover
-        </h1>
+      <a href="/" className="text-white z-10 flex items-center space-x-2">
+        <FontAwesomeIcon icon={faBookOpen} className="text-2xl relative top-[1px] text-purple-400" />
+        <h1 className="text-2xl font-extrabold tracking-wide leading-none" style={{ fontFamily: "'Roxborough CF', serif" }}>
+  Cover To Cover
+</h1>
+
       </a>
 
       {/* Navigation Links, Search Bar & Account Icon */}
@@ -38,7 +40,7 @@ export default function Navbar() {
         </div>
 
         {/* Account Icon */}
-        <FontAwesomeIcon icon={faCircleUser} flip="horizontal" size="2xl" className="text-white text-2xl" />
+        <FontAwesomeIcon icon={faCircleUser} flip="horizontal" size="2xl" className="text-purple-400 text-2xl" />
       </div>
     </header>
   );
