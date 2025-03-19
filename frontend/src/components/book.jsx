@@ -1,34 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BookItem from './BookItem';
+import Filter from './Filter';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Book() {
   const [books, setBooks] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const [searchParams] = useSearchParams();
+  // Use the "q" parameter or default to "most popular books"
+  const searchQuery = searchParams.get('q') || 'most popular books';
+
+  // Full list of categories
+  const categories = [
+    "ARCHITECTURE",
+    "LITERARY CRITICISM",
+    "ART",
+    "MATHEMATICS",
+    "BIBLES",
+    "MEDICAL",
+    "BIOGRAPHY & AUTOBIOGRAPHY",
+    "MUSIC",
+    "NATURE",
+    "BUSINESS & ECONOMICS",
+    "PERFORMING ARTS",
+    "PETS",
+    "COMPUTERS",
+    "PHILOSOPHY",
+    "COOKING",
+    "PHOTOGRAPHY",
+    "POETRY",
+    "DESIGN",
+    "DRAMA",
+    "PSYCHOLOGY",
+    "EDUCATION",
+    "RELIGION",
+    "FICTION",
+    "SCIENCE",
+    "GAMES & ACTIVITIES",
+    "SELF-HELP",
+    "GARDENING",
+    "HEALTH & FITNESS",
+    "SPORTS & RECREATION",
+    "HISTORY",
+    "TECHNOLOGY & ENGINEERING",
+    "HUMOR",
+    "TRANSPORTATION",
+    "TRAVEL",
+   
+    "LAW"
+  ];
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes`, {
+      // Combine search query and category (if one is selected) using the subject syntax
+      let query = searchQuery;
+      if (selectedCategory) {
+        query += `+subject:${selectedCategory}`;
+      }
+
+      const response = await axios.get('https://www.googleapis.com/books/v1/volumes', {
         params: {
-          q: 'most popular books', 
+          q: query,
           maxResults: 10,
           startIndex: page * 10,
-          key: ''
+          key: '' // Add your API key here if needed
         }
       });
 
       const data = response.data;
-      setBooks(data.items);
+      setBooks(data.items || []);
       setTotalPages(Math.ceil(data.totalItems / 10));
     } catch (error) {
-      console.error("Error fetching books:", error);
+      console.error('Error fetching books:', error);
     }
   };
 
   useEffect(() => {
     fetchBooks();
-  }, [page]);
+  }, [page, searchQuery, selectedCategory]);
 
   const getPageButtons = () => {
     const buttons = [];
@@ -40,10 +93,21 @@ export default function Book() {
   };
 
   return (
-    <section className="container mx-auto p-4 antialiased bg-gray-900 text-white min-h-screen">
+    <section className="container mx-auto  antialiased bg-gray-900 text-white min-h-screen">
+      {/* Filter Component */}
+      <Filter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onChange={(newCategory) => {
+          setSelectedCategory(newCategory);
+          setPage(0); // Reset to first page on filter change
+        }}
+      />
+<br />
+      {/* List of Books */}
       {books.map((book) => {
         const authors = book.volumeInfo.authors?.slice(0, 2).join(', ') || 'Unknown Author';
-        const genres = book.volumeInfo.categories || []; // Extract genres from API
+        const genres = book.volumeInfo.categories || [];
 
         return (
           <BookItem
@@ -55,7 +119,8 @@ export default function Book() {
             imageUrl={book.volumeInfo.imageLinks?.thumbnail}
             rating={book.volumeInfo.averageRating}
             reviews={book.volumeInfo.ratingsCount || 0}
-            genres={genres} // Pass genres as a prop
+            genres={genres}
+            
           />
         );
       })}
