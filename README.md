@@ -1,3 +1,5 @@
+<h1>Cover to Cover - Book Tracking & Review </h1>
+<p>Cover to Cover is a full-stack web application where users review, rate, and organize books. It enables readers to create profiles, save titles to custom lists, follow peers, and engage with community-driven ratings. The platform suggests books based on user preferences and activity, supports advanced search/filtering by genre or author, and prioritizes security with encrypted authentication. Built with modern tools, it simplifies discovering books while fostering meaningful interactions around shared reading interests.</p>
 <h1>Project Setup</h1>
 
 
