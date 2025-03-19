@@ -10,18 +10,20 @@ const BookItem = ({ title, author, description, imageUrl, rating, reviews, id, g
   const displayedGenres = genres?.slice(0, 3).join(', ') || 'No genres listed';
 
   return (
-    <Link to={`/book/${id}`} className="block hover:opacity-90 transition-opacity">
-      <article className="flex flex-wrap md:flex-nowrap shadow-lg mx-auto max-w-[600px] max-h-[220px] group cursor-pointer mb-3 bg-gray-800">
+    
+      <article className="flex flex-wrap md:flex-nowrap shadow-lg mx-auto max-w-[600px] max-h-[220px] group  mb-3 bg-gray-800 ">
+        <Link to={`/book/${id}`} className="block hover:opacity-90 transition-opacity">
         <img
           className="w-[120px] h-[180px] object-cover rounded-md"
           src={imageUrl || "https://edit.org/images/cat/book-covers-big-2019101610.jpg"}
           alt="Book Cover"
-        />
+        /></Link>
         <div className="flex flex-col justify-between p-3 w-full">
-          <div>
+        <Link to={`/book/${id}`} className="block hover:opacity-90 transition-opacity">
+        <div>
             <h1 className="text-lg font-semibold text-white">{title}</h1>
             <p className="text-sm text-gray-300 mt-1 leading-tight">{truncatedDescription}</p>
-          </div>
+          </div></Link>
           <div className="bg-gray-700 p-2 rounded-md">
             <div className="flex justify-between items-center">
               <div>
@@ -59,7 +61,7 @@ const BookItem = ({ title, author, description, imageUrl, rating, reviews, id, g
           </div>
         </div>
       </article>
-    </Link>
+    
   );
 };
 
