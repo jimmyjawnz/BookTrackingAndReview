@@ -15,7 +15,7 @@
 - Database: MySQL
   
 ## Authors
-- David Blackwel
+- David Blackwell
 - Pranav Talwar
 - James Provost
 - Jaimi McDiarmid
