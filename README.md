@@ -13,7 +13,14 @@
 - Frontend: React, TailwindCSS
 - Backend: Spring Boot
 - Database: MySQL
+  
+## Authors
+- David Blackwel
+- Pranav Talwar
+- James Provost
+- Jaimi McDiarmid
 
+  
 ## Project Setup  
 
 ### Frontend  
