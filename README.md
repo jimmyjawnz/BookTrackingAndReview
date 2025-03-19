@@ -1,6 +1,8 @@
-# Cover to Cover - Book Tracking & Review  
-
+# Cover to Cover - Book Tracking & Review (In Working)
 📚 A full-stack platform for reviewing, rating, and organizing books. Features personalized recommendations via **Book API**, secure authentication, and community-driven insights.  
+
+<img src="https://raw.githubusercontent.com/Pranav-Talwar/BookTrackingAndReview/main/frontend/public/new.png" alt="Project Screenshot" />
+<img src="https://raw.githubusercontent.com/Pranav-Talwar/BookTrackingAndReview/main/frontend/public/r.png" alt="Project Screenshot" />
 
 ## Features  
 - 📖 Custom reading lists & peer following  
