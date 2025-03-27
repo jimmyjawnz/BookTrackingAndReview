@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div>
 
-      <Book/> {/* Use the BookCard component properly */}
+      <Book/> 
     </div>
   );
 }
