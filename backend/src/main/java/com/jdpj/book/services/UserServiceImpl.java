@@ -3,10 +3,12 @@ package com.jdpj.book.services;
 import com.jdpj.book.dao.UserRepository;
 import com.jdpj.book.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
