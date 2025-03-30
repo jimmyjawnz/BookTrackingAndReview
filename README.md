@@ -22,14 +22,15 @@
 - James Provost
 - Jaimi McDiarmid
 
-  
+
 ## Project Setup  
 
 ### Frontend  
 ```bash
 npm install
+<!--
 npm install tailwindcss @tailwindcss/vite
 npm install @radix-ui/react-avatar
 npx shadcn@latest add avatar
 npm install lucide-react react-router-dom axios
-npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons
+npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons -->
