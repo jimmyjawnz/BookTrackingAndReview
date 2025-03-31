@@ -2,13 +2,16 @@ package com.jdpj.book.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="userid")
     private int id;
 
     @Column(name="username")
@@ -19,6 +22,9 @@ public class User {
 
     @Column(name="email")
     private String email;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<Friend> listFriends = new ArrayList<>();
 
     // define getter/setters
     public int getId() {
@@ -53,15 +59,23 @@ public class User {
         this.email = email;
     }
 
-    // define constructors
-    public User() {
-
+    public List<Friend> getFriends() {
+        return  this.listFriends;
     }
 
-    public User(String userName, String password, String email) {
+    public void setFriends(List<Friend> friends) {
+        this.listFriends = friends;
+    }
+
+    // define constructors
+    public User() {
+    }
+
+    public User(String userName, String password, String email, List<Friend> friends) {
         this.userName = userName;
         this.password = password;
         this.email = email;
+        this.listFriends = friends;
     }
 
     // define toString
