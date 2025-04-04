@@ -1,6 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faBookOpen } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import UserProfile from "./UserProfile";
+
+
 
 export default function Navbar() {
   return (
@@ -40,7 +44,9 @@ export default function Navbar() {
         </div>
 
         {/* Account Icon */}
-        <FontAwesomeIcon icon={faCircleUser} flip="horizontal" size="2xl" className="text-purple-400 text-2xl" />
+        <Link to="/user">
+        <FontAwesomeIcon icon={faCircleUser} flip="horizontal" size="2xl" className="text-purple-400 text-2xl" cursor="pointer" />
+        </Link>
       </div>
     </header>
   );

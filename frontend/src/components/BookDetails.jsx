@@ -8,6 +8,12 @@ const BookDetails = () => {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState('');
+
+
 
   // Updated hardcoded reviews with mock avatars
   const hardcodedReviews = [
@@ -33,6 +39,9 @@ const BookDetails = () => {
   const renderDescription = (description) => {
     return { __html: description };
   };
+
+// Stores the reviews locally for now and uses the hardcoded reviews
+    const [reviews, setReviews] = useState(hardcodedReviews);
 
   // Function to strip HTML and truncate text
   const getPreviewText = (html, wordLimit = 50) => {
@@ -142,14 +151,13 @@ const BookDetails = () => {
             <h2 className="text-2xl font-bold">Community Reviews</h2>
             <button 
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-all duration-200"
-              onClick={() => console.log('Add review clicked')}
-            >
+              onClick={() => setShowReviewModal(true)}>
               Add Your Review
             </button>
           </div>
 
           <div className="space-y-6">
-            {hardcodedReviews.map(review => (
+            {reviews.map(review => (
               <div key={review.id} className="bg-gray-700 p-6 rounded-lg hover:bg-gray-600/50 transition-colors duration-200">
                 <div className="flex items-start gap-4">
                   <Avatar className="w-12 h-12 border-2 border-purple-500">
@@ -192,6 +200,62 @@ const BookDetails = () => {
               </div>
             ))}
           </div>
+
+            {/* Popup modal for reviews */}
+          {showReviewModal && (
+              <div className="fixed inset-0 bg-grey bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+                <div className="bg-white text-black p-6 rounded-xl shadow-lg w-full max-w-lg">
+                  <h2 className="text-xl font-semibold mb-4">Write a Review</h2>
+
+                    {/* Star Rating */}
+                  <div className="flex space-x-1 mb-4 text-yellow-400 text-2xl">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        className={`cursor-pointer ${star <= (hoverRating || rating) ? 'text-1e2939-400' : 'text-gray-300'}`}>
+                        ★
+                      </span>
+                    ))}
+                  </div>
+
+                    {/* Comment Input */}
+                  <textarea
+                    className="w-full border rounded p-2 h-24 mb-4" placeholder="What did you think?" value={comment} onChange={(e) => setComment(e.target.value)}/>
+
+                    {/* cancel and submit buttons */}
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => setShowReviewModal(false)}
+                      className="bg-gray-700 text-white px-4 py-2 rounded">
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        const newReview = {
+                          id: reviews.length + 1,
+                          user: 'You',
+                          rating,
+                          comment,
+                          date: new Date().toISOString(),
+                          avatar: 'https://randomuser.me/api/portraits/lego/1.jpg',
+                        };
+
+                      setReviews([newReview, ...reviews]);
+                      setShowReviewModal(false);
+                      setRating(0);
+                      setComment('');
+                      }}
+                      className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
         </div>
       </div>
     </div>
