@@ -7,6 +7,7 @@ USE `booktracking_db`;
 DROP TABLE IF EXISTS `listtobook`;
 DROP TABLE IF EXISTS `booklists`;
 DROP TABLE IF EXISTS `friends`;
+DROP TABLE IF EXISTS `reviews`;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `books`;
 
@@ -41,8 +42,11 @@ CREATE TABLE `users` (
 CREATE TABLE `friends` (
   `friendid` int NOT NULL AUTO_INCREMENT,
   `userid` int NOT NULL,
+  `friended` int NOT NULL,
   PRIMARY KEY (`friendid`),
   CONSTRAINT FK_UserFriend FOREIGN KEY (userid)
+      REFERENCES users(userid),
+  CONSTRAINT FK_UserFriended FOREIGN KEY (friended)
       REFERENCES users(userid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 

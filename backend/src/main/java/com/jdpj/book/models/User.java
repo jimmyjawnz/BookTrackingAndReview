@@ -28,6 +28,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Friend> listFriends = new ArrayList<>();
 
+    @OneToMany(mappedBy = "friend", fetch = FetchType.LAZY)
+    private List<Friend> listFriended = new ArrayList<>();
+
     // define getter/setters
     public int getId() {
         return id;
@@ -67,6 +70,14 @@ public class User {
 
     public void setFriends(List<Friend> friends) {
         this.listFriends = friends;
+    }
+
+    public List<Friend> getFriended() {
+        return  this.listFriended;
+    }
+
+    public void setFriended(List<Friend> friends) {
+        this.listFriended = friends;
     }
 
     // define constructors
