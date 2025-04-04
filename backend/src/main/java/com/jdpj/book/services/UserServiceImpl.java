@@ -61,4 +61,9 @@ public class UserServiceImpl implements UserService {
                 .filter(friend -> friend.getUser().getId() == id)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Friend saveFriend(Friend friend) {
+        return friendRepository.save(friend);
+    }
 }

@@ -15,6 +15,10 @@ public class Friend {
     @JoinColumn(name = "userid")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "friended")
+    private User friend;
+
     // define getter/setters
     public int getId() {
         return id;

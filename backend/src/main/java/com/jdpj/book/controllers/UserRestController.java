@@ -63,7 +63,7 @@ public class UserRestController {
         return "Deleted user id - " + userId;
     }
 
-    @GetMapping("/userFriends/{userId}")
+    @GetMapping("/friends/get/{userId}")
     public List<Friend> getUserFriends(@PathVariable int userId) {
 
         User user = userService.findById(userId);
@@ -80,5 +80,13 @@ public class UserRestController {
 
         return friends;
     }
+
+    @PostMapping("/friends/add/{userId}")
+    public Friend addFriend(@PathVariable int userId, @RequestBody Friend friend) {
+        friend.setId(0);
+
+        return userService.saveFriend(friend);
+    }
+
 
 }
