@@ -1,5 +1,6 @@
 package com.jdpj.book.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,12 +17,11 @@ public class Book {
     @Column(name="title")
     private String title;
 
-    @Column(name="author")
-    private String author;
+    @Nullable
+    @Column(name="image")
+    private String image;
 
-    @Column(name="year")
-    private int year;
-
+    @Nullable
     @Column(name="rating")
     private int rating;
 
@@ -31,11 +31,10 @@ public class Book {
     // constructors
     public Book() { }
 
-    public Book(int id, String title, String author, int year, int rating, List<ListToBook> listToBooks) {
+    public Book(int id, String title, String image, int rating, List<ListToBook> listToBooks) {
         this.id = id;
         this.title = title;
-        this.author = author;
-        this.year = year;
+        this.image = image;
         this.rating = rating;
         this.listToBooks = listToBooks;
     }
@@ -58,22 +57,13 @@ public class Book {
         this.title = title;
     }
 
-    // Getter and Setter for author
-    public String getAuthor() {
-        return author;
+    // Getter and Setter for image
+    public String getImage() {
+        return image;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    // Getter and Setter for year
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     // Getter and Setter for rating
@@ -100,8 +90,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", year='" + year + '\'' +
+                ", image='" + image + '\'' +
                 ", rating='" + rating + '\'' +
                 '}';
     }

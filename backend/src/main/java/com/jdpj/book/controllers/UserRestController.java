@@ -1,5 +1,6 @@
 package com.jdpj.book.controllers;
 
+import com.jdpj.book.models.Friend;
 import com.jdpj.book.models.User;
 import com.jdpj.book.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{userId}")
-    public User getuser(@PathVariable int userId) {
+    public User getUser(@PathVariable int userId) {
 
         User user = userService.findById(userId);
 
@@ -60,6 +61,24 @@ public class UserRestController {
         userService.deleteById(userId);
 
         return "Deleted user id - " + userId;
+    }
+
+    @GetMapping("/userFriends/{userId}")
+    public List<Friend> getUserFriends(@PathVariable int userId) {
+
+        User user = userService.findById(userId);
+
+        if (user == null) {
+            throw new RuntimeException("User id not found - " + userId);
+        }
+
+        List<Friend> friends = userService.getUserFriends(userId);
+
+        if (friends == null) {
+            throw new RuntimeException("User friends returned null - " + userId);
+        }
+
+        return friends;
     }
 
 }
