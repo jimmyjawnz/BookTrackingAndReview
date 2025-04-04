@@ -47,17 +47,17 @@ function UserProfile() {
       <div className="min-h-screen bg-gray-900 text-white relative">
         <div className="absolute top-0 left-0 w-full px-6 py-4 flex justify-between items-center">
 
-{/* Show friend list */}
+            {/* Show friend list */}
           <button onClick={() => setShowFriends(!showFriends)} className="bg-white text-black px-4 py-1 rounded-lg shadow">
             Friends
           </button>
 
-{/* Welcomes users with their username */}
+            {/* Welcomes users with their username */}
           <h1 className="text-4xl font-semibold">Welcome, {form.userName}</h1>
           <div className="flex flex-col items-center mt-24 mb-6">
 
 
-{/* Profile Picture */}
+            {/* Profile Picture */}
             <div className="w-28 h-28 rounded-full border-4 border-purple-500 overflow-hidden shadow-md">
               {profileImage ? (
                 <img
@@ -78,7 +78,7 @@ function UserProfile() {
           </div>
 
 
-{/* Edit profile and show lists button*/}
+            {/* Edit profile and show lists button*/}
           <div className="space-x-2">
             <button
               onClick={() => setShowEdit(true)}
@@ -95,7 +95,7 @@ function UserProfile() {
         </div>
 
 
-{/* Stats Box */}
+        {/* Stats Box */}
         <div className="h-screen flex items-center justify-center">
           <div className="bg-gray-800 w-3/4 max-w-4xl p-10 rounded-2xl shadow-lg flex justify-around text-center">
             {[
@@ -114,7 +114,7 @@ function UserProfile() {
         </div>
 
 
-{/* Friends Modal */}
+            {/* Friends Modal */}
         {showFriends && (
           <div className="absolute left-4 top-24 bg-white text-black p-4 rounded-lg shadow-md w-48">
             <ul className="space-y-1 text-sm">
@@ -126,7 +126,7 @@ function UserProfile() {
         )}
 
 
-{/* Edit profile Modal */}
+            {/* Edit profile Modal */}
         {showEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white text-black p-6 rounded-xl shadow-md w-full max-w-md">
@@ -167,7 +167,7 @@ function UserProfile() {
       </div>
 
 
-{/* Book List Modal */}
+        {/* Book List Modal */}
       {showBookListModal && (
         <div className="fixed inset-0 bg-grey bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white text-black p-6 rounded-xl shadow-md w-full max-w-4xl flex flex-col gap-4">
@@ -175,21 +175,16 @@ function UserProfile() {
               <h2 className="text-xl font-bold">Your Book Lists</h2>
               <button
                 onClick={() => setShowBookListModal(false)}
-                className="text-sm text-gray-500"
-              >
+                className="text-sm text-gray-500">
                 Close
               </button>
             </div>
 
 
-{/* Input to create a category */}
+                {/* Input to create a list */}
             <div className="flex gap-2">
-              <input
-                type="text"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="New list name..."
-                className="border px-3 py-2 rounded w-full"
+              <input type="text" value={newCategory} onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="New list name..." className="border px-3 py-2 rounded w-full"
               />
               <button
                 onClick={() => {if (!newCategory) return;
@@ -203,9 +198,9 @@ function UserProfile() {
             </div>
 
 
-            {/* 2-column layout */}
+
             <div className="flex gap-4">
-{/* List of categories */}
+                {/* List of categories */}
               <div className="w-1/3 bg-gray-100 rounded p-4 h-64 overflow-y-auto">
                 {bookLists.map((list, i) => (
                   <div
@@ -222,7 +217,7 @@ function UserProfile() {
               </div>
 
 
-{/* Right: Books inside selected list */}
+                {/* Books inside selected list */}
               <div className="w-2/3 bg-gray-50 rounded p-4 h-64 overflow-y-auto">
                 <h3 className="text-lg font-medium mb-2">
                   {selectedCategory || 'Select a list'}
