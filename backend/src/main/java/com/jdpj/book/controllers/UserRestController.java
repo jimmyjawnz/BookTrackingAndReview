@@ -14,16 +14,14 @@ public class UserRestController {
 
     @Autowired
     public UserRestController(UserService userService) {
-        userService = userService;
+        this.userService = userService;
     }
 
-    // expose "/users" and return a list of users
     @GetMapping("/users")
     public List<User> findAll() {
         return userService.findAll();
     }
 
-    // add mapping for GET /users/{userId}
     @GetMapping("/users/{userId}")
     public User getuser(@PathVariable int userId) {
 
@@ -36,7 +34,6 @@ public class UserRestController {
         return user;
     }
 
-    // add mapping for POST /users - add new user
     @PostMapping("/users")
     public User addUser(@RequestBody User user) {
 
@@ -45,14 +42,12 @@ public class UserRestController {
         return userService.save(user);
     }
 
-    // add mapping for PUT /users - update existing user
     @PutMapping("/users")
     public User updateUser(@RequestBody User user) {
 
         return userService.save(user);
     }
 
-    // add mapping for DELETE /users/{userId} - delete user
     @DeleteMapping("/users/{userId}")
     public String deleteUser(@PathVariable int userId) {
 
