@@ -1,5 +1,6 @@
 package com.jdpj.book.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,14 +18,16 @@ public class BookList {
     @JoinColumn(name = "userid")
     private User user;
 
+    @Nullable
     @Column(name="name")
     private String name;
 
     // Null -> Private | 0 -> Friends | 1 -> Public
+    @Nullable
     @Column(name="visibility")
     private boolean visibility;
 
-    @OneToMany(mappedBy = "booklists", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "booklist", fetch = FetchType.LAZY)
     private List<ListToBook> listToBooks;
 
     // constructors

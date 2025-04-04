@@ -1,6 +1,7 @@
 package com.jdpj.book.controllers;
 
 import com.jdpj.book.models.Book;
+import com.jdpj.book.models.Review;
 import com.jdpj.book.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,4 +63,21 @@ public class BookRestController {
         return "Deleted book id - " + bookId;
     }
 
+    @GetMapping("/bookReviews/{bookId}")
+    public List<Review> getBookReviews(@PathVariable int bookId) {
+
+        Book book = bookService.findById(bookId);
+
+        if (book == null) {
+            throw new RuntimeException("Book id not found - " + bookId);
+        }
+
+        List<Review> reviews = bookService.getBookReviews(bookId);
+
+        if (reviews == null) {
+            throw new RuntimeException("Book reviews returned null - " + bookId);
+        }
+
+        return reviews;
+    }
 }

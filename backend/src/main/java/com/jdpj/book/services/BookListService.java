@@ -14,4 +14,6 @@ public interface BookListService {
     BookList save(BookList bookList);
 
     void deleteById(int id);
+
+    List<Book> getBooksByListId(int id);
 }

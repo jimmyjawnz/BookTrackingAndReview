@@ -64,4 +64,22 @@ public class BookListRestController {
         return "Deleted BookList id - " + bookListId;
     }
 
+    @GetMapping("/booksInList/{bookListId}")
+    public List<Book> getBooksInList(@PathVariable int bookListId) {
+
+        BookList bookList = bookListService.findById(bookListId);
+
+        if (bookList == null) {
+            throw new RuntimeException("BookList id not found - " + bookListId);
+        }
+
+        List<Book> books = bookListService.getBooksByListId(bookListId);
+
+        if (books == null) {
+            throw new RuntimeException("BookList books returned null - " + bookListId);
+        }
+
+        return books;
+    }
+
 }
