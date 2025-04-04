@@ -1,5 +1,6 @@
 package com.jdpj.book.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class User {
     @Column(name="userid")
     private int id;
 
+    @Nullable
     @Column(name="username")
     private String userName;
 
@@ -23,7 +25,7 @@ public class User {
     @Column(name="email")
     private String email;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Friend> listFriends = new ArrayList<>();
 
     // define getter/setters
