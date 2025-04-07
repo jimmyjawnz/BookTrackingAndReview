@@ -7,6 +7,7 @@ USE `booktracking_db`;
 DROP TABLE IF EXISTS `listtobook`;
 DROP TABLE IF EXISTS `booklists`;
 DROP TABLE IF EXISTS `friends`;
+DROP TABLE IF EXISTS `reviews`;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `books`;
 
@@ -41,8 +42,11 @@ CREATE TABLE `users` (
 CREATE TABLE `friends` (
   `friendid` int NOT NULL AUTO_INCREMENT,
   `userid` int NOT NULL,
+  `friended` int NOT NULL,
   PRIMARY KEY (`friendid`),
   CONSTRAINT FK_UserFriend FOREIGN KEY (userid)
+      REFERENCES users(userid),
+  CONSTRAINT FK_UserFriended FOREIGN KEY (friended)
       REFERENCES users(userid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -54,8 +58,7 @@ CREATE TABLE `friends` (
 CREATE TABLE `books` (
   `bookid` int NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
-  `author` varchar(50) DEFAULT NULL,
-  `year` int DEFAULT 1000,
+  `image` varchar(255) DEFAULT NULL,
   `rating` int DEFAULT NULL,
   PRIMARY KEY (`bookid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
@@ -88,5 +91,22 @@ CREATE TABLE `listtobook` (
   CONSTRAINT FK_BookListRelation FOREIGN KEY (booklistid)
     REFERENCES booklists(booklistid),
   CONSTRAINT FK_BookRelation FOREIGN KEY (bookid)
+    REFERENCES books(bookid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `reviewid` int NOT NULL AUTO_INCREMENT,
+  `userid` int NOT NULL,
+  `bookid` int NOT NULL,
+  `content` varchar(225) DEFAULT NULL,
+  `rating` int DEFAULT NULL,
+  PRIMARY KEY (`reviewid`),
+  CONSTRAINT FK_UserToReview FOREIGN KEY (userid)
+    REFERENCES users(userid),
+  CONSTRAINT FK_BookToReview FOREIGN KEY (bookid)
     REFERENCES books(bookid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Browse from './components/Browse';
 import './App.css';
 import BookDetails from './components/BookDetails'; // Add this import
+import UserProfile from './components/UserProfile';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/signin" element={<SigninForm />} />
+          <Route path="/user" element={<UserProfile />} />
+
         </Routes>
       </div>
     </Router>
