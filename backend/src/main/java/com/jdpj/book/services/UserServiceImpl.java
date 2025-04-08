@@ -6,6 +6,7 @@ import com.jdpj.book.models.Friend;
 import com.jdpj.book.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +45,15 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User save(User user) {
+        // Hash the password only if it hasn't been encoded yet
+        if (!user.getPassword().startsWith("$2a$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return userRepository.save(user);
     }
 
