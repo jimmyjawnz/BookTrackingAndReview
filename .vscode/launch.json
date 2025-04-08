@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PasswordHasher",
+            "request": "launch",
+            "mainClass": "com.jdpj.book.security.PasswordHasher",
+            "projectName": "book"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-BookApplication<book>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
