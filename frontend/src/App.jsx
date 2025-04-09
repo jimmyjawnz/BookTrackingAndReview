@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // ✅ Use 'Routes' instead of 'Switch'
+import RegisterForm from './components/RegisterForm';
 import SigninForm from './components/SigninForm';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -20,6 +21,7 @@ function App() {
 
           <Route path="/" element={<Home />} />
           <Route path="/browse" element={<Browse />} />
+          <Route path="/register" element={<RegisterForm />} />
           <Route path="/signin" element={<SigninForm />} />
           <Route path="/user" element={<UserProfile />} />
 
