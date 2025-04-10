@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom'; 
+import { useAuth } from '../components/AuthContext';
 
 const SigninForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -18,7 +21,7 @@ const SigninForm = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include', 
-        body: JSON.stringify({ email: email, password: password }),
+        body: JSON.stringify({ email, password }),
       });
       
       const data = await response.json();
@@ -26,6 +29,7 @@ const SigninForm = () => {
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data));
         setSuccess('Login successful!');
+        login(data);
         navigate('/');
       }else {
         setError(data.message || 'Login failed');
