@@ -23,10 +23,7 @@ export default function Navbar() {
         <nav>
           <ul className="flex space-x-6 text-lg">
             <li>
-              <Link to="/blog" className="hover:text-gray-300">Home</Link>
-            </li>
-            <li>
-              <Link to="#" className="hover:text-gray-300">Browse</Link>
+              <Link to="/" className="hover:text-gray-300">Home</Link>
             </li>
           </ul>
         </nav>
