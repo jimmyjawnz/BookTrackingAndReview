@@ -35,13 +35,13 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<UserResponse> loginUser(@RequestBody LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok("User authenticated successfully");
+            return ResponseEntity.ok(new UserResponse(user.getId(), user.getUserName(), user.getEmail()));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 }

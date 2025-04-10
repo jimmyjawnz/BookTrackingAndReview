@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../components/AuthContext';
 
+const { user } = useContext(AuthContext);
 
 function UserProfile() {
   const [showFriends, setShowFriends] = useState(false);
@@ -22,22 +24,24 @@ function UserProfile() {
 
   const currentUserId = 1;
 
+  if (!user) return <div className="text-white p-10">Loading your profile...</div>;
+
   useEffect(() => {
-      fetch(`http://localhost:8080/api/friends/get/user/1`)
+      fetch(`http://localhost:8081/api/friends/get/user/${user.id}`)
       .then(res => res.json())
       .then((data) =>
       {const followedUsers = data.map(f => f.friend);
           setFriends(followedUsers);
           })
       .catch(err => console.error("Failed to fetch friends:", err));
-  }, []);
+  }, [user?.userId]);
 
 useEffect(() => {
-  fetch("/api/reviews/user/1")
+  fetch(`/api/reviews/user/${user.id}`)
     .then((res) => res.json())
     .then((data) => setReviews(data))
     .catch((err) => console.error("Failed to load reviews", err));
-}, []);
+}, [user?.userId]);
 
 
   const handleChange = (e) => {
