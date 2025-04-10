@@ -1,5 +1,7 @@
 package com.jdpj.book.services;
 
+import com.jdpj.book.models.Book;
+import com.jdpj.book.models.BookList;
 import com.jdpj.book.models.Friend;
 import com.jdpj.book.models.User;
 
@@ -18,4 +20,6 @@ public interface UserService {
     List<Friend> getUserFriends(int id);
 
     Friend saveFriend(Friend friend);
+
+    List<BookList> getOwnedBookLists(int id);
 }
