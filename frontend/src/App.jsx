@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // ✅ Use 'Routes' instead of 'Switch'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
 import RegisterForm from './components/RegisterForm';
 import SigninForm from './components/SigninForm';
 import Navbar from './components/Navbar';
