@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../components/AuthContext';
+import { useEffect, useState } from 'react';
+import BookListModal from '../components/BookListModal';
 
-const { user } = useContext(AuthContext);
+
 
 function UserProfile() {
   const [showFriends, setShowFriends] = useState(false);
@@ -10,10 +10,14 @@ function UserProfile() {
   const [profileImage, setProfileImage] = useState(null);
 
 
-  const [form, setForm] = useState({
-    userName: 'JoeAnderson',
-    email: 'JoeAnd@gmail.com',
-  });
+const [form, setForm] = useState(() => {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  return {
+    userName: storedUser?.userName || "",
+    email: storedUser?.email || "",
+  };
+});
+
 
   const [bookLists, setBookLists] = useState([]);
   const [newCategory, setNewCategory] = useState('');
@@ -22,31 +26,28 @@ function UserProfile() {
   const [friends, setFriends] = useState([]);
   const [reviews, setReviews] = useState([]);
 
-  const currentUserId = 1;
 
-  if (!user) return <div className="text-white p-10">Loading your profile...</div>;
+//   useEffect(() => {
+//       fetch(`http://localhost:8081/api/friends/get/user/1`)
+//       .then(res => res.json())
+//       .then((data) =>
+//       {const followedUsers = data.map(f => f.friend);
+//           setFriends(followedUsers);
+//           })
+//       .catch(err => console.error("Failed to fetch friends:", err));
+//   }, []);
 
-  useEffect(() => {
-      fetch(`http://localhost:8081/api/friends/get/user/${user.id}`)
-      .then(res => res.json())
-      .then((data) =>
-      {const followedUsers = data.map(f => f.friend);
-          setFriends(followedUsers);
-          })
-      .catch(err => console.error("Failed to fetch friends:", err));
-  }, [user?.userId]);
-
-useEffect(() => {
-  fetch(`/api/reviews/user/${user.id}`)
-    .then((res) => res.json())
-    .then((data) => setReviews(data))
-    .catch((err) => console.error("Failed to load reviews", err));
-}, [user?.userId]);
-
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+// useEffect(() => {
+//   fetch("/api/reviews/user/1")
+//     .then((res) => res.json())
+//     .then((data) => setReviews(data))
+//     .catch((err) => console.error("Failed to load reviews", err));
+// }, []);
+//
+//
+//   const handleChange = (e) => {
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   };
 
 
 // save profile edit
@@ -174,42 +175,20 @@ useEffect(() => {
             </div>
           )}
 
-          {/* Book List Modal */}
           {showBookListModal && (
-            <div className="fixed inset-0 bg-grey bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-white text-black p-6 rounded-xl shadow-md w-full max-w-4xl flex flex-col gap-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-bold">Your Book Lists</h2>
-                  <button onClick={() => setShowBookListModal(false)} className="text-sm text-gray-500">
-                    Close
-                  </button>
-                </div>
-                <div className="flex gap-2">
-                  <input type="text" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="New list name..." className="border px-3 py-2 rounded w-full" />
-                  <button onClick={() => { if (!newCategory) return; setBookLists([...bookLists, newCategory]); setBookData({ ...bookData, [newCategory]: [] }); setNewCategory(''); }} className="bg-purple-500 text-white px-3 py-2 rounded">
-                    Add Category
-                  </button>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-1/3 bg-gray-100 rounded p-4 h-64 overflow-y-auto">
-                    {bookLists.map((list, i) => (
-                      <div key={i} onClick={() => setSelectedCategory(list)} className={`cursor-pointer mb-2 p-2 rounded ${selectedCategory === list ? 'bg-purple-200' : 'hover:bg-gray-200'}`}>
-                        {list}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="w-2/3 bg-gray-50 rounded p-4 h-64 overflow-y-auto">
-                    <h3 className="text-lg font-medium mb-2">{selectedCategory || 'Select a list'}</h3>
-                    {selectedCategory && (
-                      <ul className="list-disc pl-5">
-                        {(bookData[selectedCategory] || []).map((book, i) => <li key={i}>{book}</li>)}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BookListModal
+              onClose={() => setShowBookListModal(false)}
+              newCategory={newCategory}
+              setNewCategory={setNewCategory}
+              bookLists={bookLists}
+              setBookLists={setBookLists}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              bookData={bookData}
+              setBookData={setBookData}
+            />
           )}
+
         </div>
       </div>
     );
