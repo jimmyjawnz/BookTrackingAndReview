@@ -110,3 +110,11 @@ CREATE TABLE `reviews` (
   CONSTRAINT FK_BookToReview FOREIGN KEY (bookid)
     REFERENCES books(bookid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+--
+-- Query for updating user passwords that may still be plain-text
+--
+
+UPDATE users
+SET password = 'hashed password using PasswordHasher'
+WHERE userid = 1;
