@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 const RegisterForm = () => {
-  const [username, setUsername] = useState('');
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,12 +24,13 @@ const RegisterForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ userName, email, password }),
       });
 
       if (response.ok) {
         setSuccess('Registration successful! You can now log in.');
-        setUsername('');
+        setUserName('');
+        setEmail('');
         setPassword('');
         setConfirmPassword('');
       } else {
@@ -53,12 +55,23 @@ const RegisterForm = () => {
             <label className="block text-sm font-medium text-gray-300">Username</label>
             <input
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-purple-500"
               required
             />
           </div>
+
+          <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-300">Email</label>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-purple-500"
+                required
+              />
+            </div>
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-300">Password</label>

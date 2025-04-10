@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 
 function UserProfile() {
   const [showFriends, setShowFriends] = useState(false);
@@ -16,7 +17,28 @@ function UserProfile() {
   const [newCategory, setNewCategory] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [bookData, setBookData] = useState({});
-  const friends = Array(9).fill("Friend Username");
+  const [friends, setFriends] = useState([]);
+  const [reviews, setReviews] = useState([]);
+
+  const currentUserId = 1;
+
+  useEffect(() => {
+      fetch(`http://localhost:8080/api/friends/get/user/1`)
+      .then(res => res.json())
+      .then((data) =>
+      {const followedUsers = data.map(f => f.friend);
+          setFriends(followedUsers);
+          })
+      .catch(err => console.error("Failed to fetch friends:", err));
+  }, []);
+
+useEffect(() => {
+  fetch("/api/reviews/user/1")
+    .then((res) => res.json())
+    .then((data) => setReviews(data))
+    .catch((err) => console.error("Failed to load reviews", err));
+}, []);
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -45,25 +67,36 @@ function UserProfile() {
   return (
       <div className="min-h-screen bg-gray-900 text-white flex">
         {/* Left Sidebar */}
-        <div className="w-64 bg-white text-black flex flex-col justify-between border-r-4 border-[#2B58EC] p-4">
+        <div className="w-64 bg-white text-black flex flex-col justify-screen border-r-4 border-[#2B58EC] p-4">
           {/* Friends Section */}
           <div>
             <h2 className="text-lg font-bold mb-2">Friends</h2>
             <input type="text" placeholder="Search friends..." className="w-full border px-2 py-1 rounded mb-2" />
             <ul className="space-y-1 text-sm">
-              {friends.map((friend, i) => (
-                <li key={i}>{friend}</li>
+               {friends.map((friend) => (
+                  <li key={friend.id}>
+                    <a href={`/user/${friend.id}`} className="text-blue-500 hover:underline">
+                      {friend.userName}
+                    </a>
+                  </li>
               ))}
             </ul>
           </div>
           {/* Recent Reviews */}
-          <div className="mt-4">
+          <div className="mt-[20vh]">
             <h2 className="text-lg font-bold mb-2">Recent Reviews</h2>
-            <ul className="text-sm space-y-1">
-              <li>"Loved this!" - Book A</li>
-              <li>"Not bad." - Book B</li>
-              <li>"Amazing plot!" - Book C</li>
+            <ul className="space-y-2 text-sm">
+              {reviews.map((review) => (
+                <li key={review.id} className="bg-[#2d3148] p-3 rounded-xl shadow text-white">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold">{review.book.title}</span>
+                    <span className="text-yellow-400">{review.rating} ⭐</span>
+                  </div>
+                  <p className="text-gray-300 mt-1 text-sm italic">"{review.content}"</p>
+                </li>
+              ))}
             </ul>
+
           </div>
         </div>
 

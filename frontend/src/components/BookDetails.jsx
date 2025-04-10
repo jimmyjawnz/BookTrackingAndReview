@@ -18,6 +18,7 @@ const BookDetails = () => {
   const [bookData, setBookData] = useState({});
   const [newCategory, setNewCategory] = useState('');
 
+
 useEffect(() => {
   const fetchLists = async () => {
     try {
@@ -70,6 +71,36 @@ const handleSaveToList = async () => {
   }
 };
 
+const handleSubmitReview = async () => {
+  const newReview = {
+    user: { id: 1},
+    book: { id: book.id }, // this is from your `volumeInfo` Google Books fetch
+    content: comment,
+    rating: rating
+  };
+
+  try {
+    await axios.post("/api/reviews", newReview); // your backend must support this route
+
+    // Optionally update UI without refetching
+    setReviews([
+      {
+        ...newReview,
+        id: reviews.length + 1,
+        user: 'You',
+        date: new Date().toISOString(),
+        avatar: 'https://randomuser.me/api/portraits/lego/1.jpg'
+      },
+      ...reviews
+    ]);
+
+    setShowReviewModal(false);
+    setRating(0);
+    setComment('');
+  } catch (err) {
+    console.error("Failed to save review", err);
+  }
+};
 
 
 
@@ -385,24 +416,12 @@ const handleSaveToList = async () => {
                       Cancel
                     </button>
                     <button
-                      onClick={() => {
-                        const newReview = {
-                          id: reviews.length + 1,
-                          user: 'You',
-                          rating,
-                          comment,
-                          date: new Date().toISOString(),
-                          avatar: 'https://randomuser.me/api/portraits/lego/1.jpg',
-                        };
-
-                      setReviews([newReview, ...reviews]);
-                      setShowReviewModal(false);
-                      setRating(0);
-                      setComment('');
-                      }}
-                      className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                      onClick={handleSubmitReview}
+                      className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                    >
                       Submit
                     </button>
+
                   </div>
                 </div>
               </div>
