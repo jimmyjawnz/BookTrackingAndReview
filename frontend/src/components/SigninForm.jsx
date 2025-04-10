@@ -13,23 +13,22 @@ const SigninForm = () => {
     setSuccess('');
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch('http://localhost:8081/api/auth/signin', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: new URLSearchParams({ username: email, password }),
+        body: JSON.stringify({ userName: email, password }),
       });
 
       if (response.ok) {
         setSuccess('Login successful!');
-        // Optionally redirect the user or store token
-        // e.g. navigate('/dashboard');
       } else {
         const text = await response.text();
         setError(text || 'Login failed');
       }
     } catch (err) {
+      console.log('Error:', err);
       setError('Something went wrong. Please try again.');
     }
   };
