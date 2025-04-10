@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { Link , useNavigate} from 'react-router-dom'; 
 
 const SigninForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -15,17 +16,18 @@ const SigninForm = () => {
     try {
       const response = await fetch('http://localhost:8081/api/auth/signin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userName: email, password }),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', 
+        body: JSON.stringify({ email: email, password: password }),
       });
+      
+      const data = await response.json();
 
       if (response.ok) {
         setSuccess('Login successful!');
-      } else {
-        const text = await response.text();
-        setError(text || 'Login failed');
+        navigate('/');
+      }else {
+        setError(data.message || 'Login failed');
       }
     } catch (err) {
       console.log('Error:', err);

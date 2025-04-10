@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
-        User user = userRepository.findByUserName(loginRequest.getUserName())
+        User user = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
