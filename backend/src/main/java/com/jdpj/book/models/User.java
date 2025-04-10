@@ -31,6 +31,12 @@ public class User {
     @OneToMany(mappedBy = "friend", fetch = FetchType.LAZY)
     private List<Friend> listFriended = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userBL", fetch = FetchType.LAZY)
+    private List<BookList> listBookLists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userR", fetch = FetchType.LAZY)
+    private List<Review> listReviews = new ArrayList<>();
+
     // define getter/setters
     public int getId() {
         return id;
@@ -72,23 +78,37 @@ public class User {
         this.listFriends = friends;
     }
 
+    public void setFriended(List<Friend> friends) {
+        this.listFriended = friends;
+    }
+
     public List<Friend> getFriended() {
         return  this.listFriended;
     }
 
-    public void setFriended(List<Friend> friends) {
-        this.listFriended = friends;
+    public void setBookLists(List<BookList> bookLists) {
+        this.listBookLists = bookLists;
     }
+
+    public List<BookList> getBookLists() {
+        return  this.listBookLists;
+    }
+
+    public void setReviews(List<Review> reviews) { this.listReviews = reviews; }
+
+    public List<Review> getReviews() {return this.listReviews;}
 
     // define constructors
     public User() {
     }
 
-    public User(String userName, String password, String email, List<Friend> friends) {
+    public User(String userName, String password, String email, List<Friend> friends, List<BookList> booklists, List<Review> reviews) {
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.listFriends = friends;
+        this.listBookLists = booklists;
+        this.listReviews = reviews;
     }
 
     // define toString

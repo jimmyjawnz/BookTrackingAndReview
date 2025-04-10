@@ -41,7 +41,6 @@ public class BookListServiceImpl implements BookListService {
             bookList = result.get();
         }
         else {
-            // we didn't find the employee
             throw new RuntimeException("Did not find BookList id - " + id);
         }
 
@@ -74,5 +73,18 @@ public class BookListServiceImpl implements BookListService {
         }
 
         return bookList;
+    }
+
+    @Override
+    public ListToBook saveBookToList(Book book, int listId) {
+        BookList bookList = findById(listId);
+
+        // Create a new relation and fill it with data
+        ListToBook newRelation = new ListToBook();
+        newRelation.setBook(book);
+        newRelation.setBookList(bookList);
+
+        // Return the relation and save it to the database
+        return listToBookRepository.save(newRelation);
     }
 }
