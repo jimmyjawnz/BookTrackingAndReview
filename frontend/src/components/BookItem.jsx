@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 const BookItem = ({ title, author, description, imageUrl, rating, reviews, id, genres }) => {
   const truncatedDescription = description?.length > 100 
     ? description.slice(0, 100) + "..." 
@@ -8,6 +9,7 @@ const BookItem = ({ title, author, description, imageUrl, rating, reviews, id, g
 
   // Display up to 3 genres
   const displayedGenres = genres?.slice(0, 3).join(', ') || 'No genres listed';
+
 
   return (
     
@@ -50,10 +52,11 @@ const BookItem = ({ title, author, description, imageUrl, rating, reviews, id, g
               </div>
               <button 
                 className="py-1 px-3 bg-purple-800 hover:bg-purple-700 text-white text-xs font-bold rounded-md"
-                onClick={(e) => e.preventDefault()} // Prevent navigation when clicking button
+                onClick={() => setShowBookListModal(true)} // Prevent navigation when clicking button
               >
                 Add To List
               </button>
+
             </div>
             <div className="mt-1 text-gray-400 text-xs">
               Genre: {displayedGenres}
