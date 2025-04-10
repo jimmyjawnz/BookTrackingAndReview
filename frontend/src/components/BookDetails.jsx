@@ -15,74 +15,23 @@ const BookDetails = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState('');
   const [showBookListModal, setShowBookListModal] = useState(false);
-  const [bookLists, setBookLists] = useState([]);
+  const [newCategory, setNewCategory] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [bookData, setBookData] = useState({});
-  const [newCategory, setNewCategory] = useState('');
 
 
-useEffect(() => {
-  const fetchLists = async () => {
-    try {
-      const response = await axios.get(`/api/bookLists`);
-      setBookLists(response.data);
-    } catch (err) {
-      console.error("Error fetching book lists:", err);
-    }
-  };
 
-  fetchLists();
-}, []);
-
-const handleAddCategory = async () => {
-  if (!newCategory) return;
-  try {
-    const response = await axios.post(`/api/bookLists`, {
-      name: newCategory,
-      visibility: 1,
-      user: { id: currentUser.id }
-    });
-
-    setBookLists([...bookLists, response.data]);
-    setNewCategory('');
-  } catch (err) {
-    console.error("Error adding book list:", err);
-  }
-};
-
-const handleSaveToList = async () => {
-  const newBook = {
-    id: book.id,
-    title: book.volumeInfo.title,
-    authors: book.volumeInfo.authors,
-  };
-
-  try {
-    // Save book or create if it doesn't exist
-    await axios.post('/api/books', newBook);
-
-    // Link book to list
-    await axios.post(`/api/listToBook`, {
-      booklist: { id: selectedCategoryId },
-      book: { id: book.id }
-    });
-
-    setShowBookListModal(false);
-  } catch (err) {
-    console.error("Error saving book to list:", err);
-  }
-};
 
 const handleSubmitReview = async () => {
   const newReview = {
     user: { id: 1},
-    book: { id: book.id }, // this is from your `volumeInfo` Google Books fetch
+    book: { id: book.id },
     content: comment,
     rating: rating
   };
 
   try {
-    await axios.post("/api/reviews", newReview); // your backend must support this route
+    await axios.post("/api/reviews", newReview);
 
     // Optionally update UI without refetching
     setReviews([
@@ -171,6 +120,9 @@ const handleSubmitReview = async () => {
                    book.volumeInfo.imageLinks?.thumbnail ||
                    "https://edit.org/images/cat/book-covers-big-2019101610.jpg";
 
+
+
+
   return (
     
     <div className="container mx-auto p-4 bg-gray-900 text-white min-h-screen">
@@ -219,100 +171,21 @@ const handleSubmitReview = async () => {
               >
                 Add To List
               </button></div>
-
-                   {/* Book List Modal */}
-                       {showBookListModal && (
-                         <div className="fixed inset-0 bg-grey bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50">
-                           <div className="bg-white text-black p-6 rounded-xl shadow-md w-full max-w-4xl flex flex-col gap-4">
-                             <div className="flex justify-between items-center">
-                               <h2 className="text-xl font-bold">Your Book Lists</h2>
-                               <button
-                                 onClick={() => setShowBookListModal(false)}
-                                 className="text-sm text-gray-500">
-                                 Close
-                               </button>
-                             </div>
-
-
-                                 {/* Input to create a list */}
-                             <div className="flex gap-2">
-                               <input
-                                 type="text"
-                                 value={newCategory}
-                                 onChange={(e) => setNewCategory(e.target.value)}
-                                 placeholder="New list name..."
-                                 className="border px-3 py-2 rounded w-full"
-                               />
-                               <button
-                                 onClick={() => {if (!newCategory) return;
-                                   setBookLists([...bookLists, newCategory]);
-                                   setBookData({ ...bookData, [newCategory]: [] });
-                                   setNewCategory('');
-                                 }}
-                                 className="bg-purple-500 text-white px-3 py-2 rounded">
-                                 Add Category
-                               </button>
-                             </div>
+                {showBookListModal && (
+                  <BookListModal
+                    onClose={() => setShowBookListModal(false)}
+                    book={book}
+                    newCategory={newCategory}
+                    setNewCategory={setNewCategory}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    bookData={bookData}
+                    setBookData={setBookData}
+                  />
+                )}
 
 
 
-                             <div className="flex gap-4">
-                                 {/* List of categories */}
-                               <div className="w-1/3 bg-gray-100 rounded p-4 h-64 overflow-y-auto">
-                                 {bookLists.map((list, i) => (
-                                   <div
-                                     key={i}
-                                     onClick={() => setSelectedCategory(list)}
-                                     className={`cursor-pointer mb-2 p-2 rounded ${
-                                       selectedCategory === list
-                                         ? 'bg-purple-200'
-                                         : 'hover:bg-gray-200'
-                                     }`}>
-                                     {list}
-                                   </div>
-                                 ))}
-                               </div>
-
-
-                                 {/* Books inside selected list */}
-                               <div className="w-2/3 bg-gray-50 rounded p-4 h-64 overflow-y-auto">
-                                 <h3 className="text-lg font-medium mb-2">
-                                   {selectedCategory || 'Select a list'}
-                                 </h3>
-                                 {selectedCategory && (
-                                   <ul className="list-disc pl-5">
-                                     {(bookData[selectedCategory] || []).map((book, i) => (
-                                       <li key={i}>{book}</li>
-                                     ))}
-                                   </ul>
-                                 )}
-                               </div>
-                            {selectedCategory && (
-                              <button
-                                onClick={() => {
-                                  if (!selectedCategory || !book) return;
-
-                                  const newBook = {
-                                    title: book.volumeInfo.title,
-                                    authors: book.volumeInfo.authors,
-                                    id: book.id
-                                  };
-
-                                  const updatedList = [...(bookData[selectedCategory] || []), newBook];
-                                  setBookData({
-                                    ...bookData,
-                                    [selectedCategory]: updatedList
-                                  });
-                                  setShowBookListModal(false);
-                                }}
-                                className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
-                                Save to {selectedCategory}
-                              </button>
-                            )}
-                         </div>
-                       </div>
-                     </div>
-                   )}
             <div className="bg-gray-800 p-4 rounded-lg">
               <h2 className="text-xl font-semibold mb-2">Description</h2>
               <div className="text-gray-300">

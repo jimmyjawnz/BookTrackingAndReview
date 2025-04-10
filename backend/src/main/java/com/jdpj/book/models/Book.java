@@ -17,9 +17,9 @@ public class Book {
     @Column(name="title")
     private String title;
 
-    @Nullable
-    @Column(name="image")
-    private String image;
+//    @Nullable
+//    @Column(name="image")
+//    private String image;
 
     @Nullable
     @Column(name="rating")
@@ -31,10 +31,10 @@ public class Book {
     // constructors
     public Book() { }
 
-    public Book(int id, String title, String image, int rating, List<ListToBook> listToBooks) {
+    public Book(int id, String title, int rating, List<ListToBook> listToBooks) {
         this.id = id;
         this.title = title;
-        this.image = image;
+//        this.image = image;
         this.rating = rating;
         this.listToBooks = listToBooks;
     }
@@ -58,13 +58,13 @@ public class Book {
     }
 
     // Getter and Setter for image
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
 
     // Getter and Setter for rating
     public int getRating() {
@@ -90,7 +90,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", image='" + image + '\'' +
+//                ", image='" + image + '\'' +
                 ", rating='" + rating + '\'' +
                 '}';
     }

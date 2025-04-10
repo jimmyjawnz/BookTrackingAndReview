@@ -1,14 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
-
-
-
-
-
-
 const BookListModal = ({
   onClose,
+  book,
   newCategory,
   setNewCategory,
 //   bookLists,
@@ -19,11 +14,11 @@ const BookListModal = ({
   setBookData
 }) => {
 
+//keeps track of the state of user and books
 const [bookLists, setBookLists] = useState([]);
-
 const currentUser = JSON.parse(localStorage.getItem('user'));
 
-
+//create new category
 const handleAddCategory = async () => {
   if (!newCategory || !currentUser) return;
 
@@ -34,7 +29,7 @@ const handleAddCategory = async () => {
       credentials: 'include',
       body: JSON.stringify({
         name: newCategory,
-        visibility: 1, // make this dynamic later if you want
+        visibility: 1,
         user: { id: currentUser.id }
       })
     });
@@ -52,13 +47,13 @@ const handleAddCategory = async () => {
   }
 };
 
-
+//gets book lists
 useEffect(() => {
   const fetchBookLists = async () => {
     try {
       const response = await fetch("http://localhost:8081/api/bookLists");
       const data = await response.json();
-      setBookLists(data); // Update your state
+      setBookLists(data);
     } catch (err) {
       console.error("Failed to fetch book lists:", err);
     }
@@ -66,6 +61,25 @@ useEffect(() => {
 
   fetchBookLists();
 }, []);
+
+//takes the selected category and fetches books within it
+const handleSelectCategory = async (category) => {
+  setSelectedCategory(category);
+
+  try {
+    const response = await fetch(`http://localhost:8081/api/booksInList/${category.id}`);
+    const booksInList = await response.json();
+
+    setBookData(prev => ({
+      ...prev,
+      [category.id]: booksInList
+    }));
+  } catch (err) {
+    console.error("Failed to fetch books for category:", err);
+  }
+};
+
+
 
   return (
     <div className="fixed inset-0 bg-grey bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50">
@@ -96,8 +110,10 @@ useEffect(() => {
             {bookLists.map((list) => (
               <div
                 key={list.id}
-                onClick={() => setSelectedCategory(list)}
-                className={`cursor-pointer mb-2 p-2 rounded ${selectedCategory?.id === list.id ? 'bg-purple-200' : 'hover:bg-gray-200'}`}
+                onClick={() => handleSelectCategory(list)}
+                 className={`cursor-pointer mb-2 p-2 rounded ${
+                   selectedCategory?.id === list.id ? 'bg-purple-200' : 'hover:bg-gray-200'
+                 }`}
               >
                 {list.name}
               </div>
@@ -109,12 +125,58 @@ useEffect(() => {
             </h3>
             {selectedCategory && (
               <ul className="list-disc pl-5">
-                {(bookData[selectedCategory] || []).map((book, i) => (
-                  <li key={i}>{book}</li>
+                {(bookData[selectedCategory.id] || []).map((book, i) => (
+                  <li key={i}>{book.title}</li>
                 ))}
               </ul>
+
             )}
+
           </div>
+
+          {selectedCategory && (
+            <div className="pt-4 border-t border-gray-300">
+              <button
+                onClick={async () => {
+                  try {
+                    // Save the book to database first
+                    const savedBookRes = await fetch(`http://localhost:8081/api/books`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      credentials: 'include',
+                      body: JSON.stringify({
+                        title: book.volumeInfo.title,
+                        rating: Math.round(book.volumeInfo.averageRating) || 0
+                      })
+                    });
+
+                    //Then to list
+                    const savedBook = await savedBookRes.json();
+                    console.log("✅ Saved book:", savedBook);
+                    await fetch(`http://localhost:8081/api/booksInList/${selectedCategory.id}`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      credentials: 'include',
+                      body: JSON.stringify(savedBook)
+                    });
+
+                    onClose();
+                  } catch (err) {
+                    console.error("Failed to save book to list:", err);
+                  }
+                }}
+
+
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200"
+              >
+                Save to "{selectedCategory.name}"
+              </button>
+            </div>
+          )}
+
+
         </div>
       </div>
     </div>
