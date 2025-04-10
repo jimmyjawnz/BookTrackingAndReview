@@ -1,4 +1,4 @@
-package com.jdpj.book.models;
+package com.jdpj.book.dto;
 
 public class LoginRequest {
     private String email;
