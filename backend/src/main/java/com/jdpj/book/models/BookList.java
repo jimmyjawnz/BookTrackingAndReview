@@ -16,7 +16,7 @@ public class BookList {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
-    private User user;
+    private User userBL;
 
     @Nullable
     @Column(name="name")
@@ -36,7 +36,7 @@ public class BookList {
 
     public BookList(int id, User user, String name, boolean visibility, List<ListToBook> listToBooks) {
         this.id = id;
-        this.user = user;
+        this.userBL = user;
         this.name = name;
         this.visibility = visibility;
         this.listToBooks = listToBooks;
@@ -53,11 +53,11 @@ public class BookList {
 
     // Getter and Setter for user
     public User getUser() {
-        return user;
+        return userBL;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.userBL = user;
     }
 
     // Getter and Setter for name

@@ -1,7 +1,9 @@
 package com.jdpj.book.services;
 
+import com.jdpj.book.dao.BookListRepository;
 import com.jdpj.book.dao.FriendRepository;
 import com.jdpj.book.dao.UserRepository;
+import com.jdpj.book.models.BookList;
 import com.jdpj.book.models.Friend;
 import com.jdpj.book.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private FriendRepository friendRepository;
+    private BookListRepository bookListRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, FriendRepository friendRepository) {
@@ -38,7 +41,6 @@ public class UserServiceImpl implements UserService {
             user = result.get();
         }
         else {
-            // we didn't find the employee
             throw new RuntimeException("Did not find User id - " + id);
         }
 
@@ -73,5 +75,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Friend saveFriend(Friend friend) {
         return friendRepository.save(friend);
+    }
+
+    @Override
+    public List<BookList> getOwnedBookLists(int id) {
+        List<BookList> allBookLists = bookListRepository.findAll();
+        return allBookLists.stream()
+                .filter(bl -> bl.getUser().getId() == id)
+                .collect(Collectors.toList());
     }
 }

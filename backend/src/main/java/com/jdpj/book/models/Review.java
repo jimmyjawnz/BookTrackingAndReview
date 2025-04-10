@@ -14,7 +14,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
-    private User user;
+    private User userR;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bookid")
@@ -34,7 +34,7 @@ public class Review {
 
     public Review(int id, User user, Book book, String content, int rating) {
         this.id = id;
-        this.user = user;
+        this.userR = user;
         this.book = book;
         this.content = content;
         this.rating = rating;
@@ -51,11 +51,11 @@ public class Review {
 
     // Getter and Setter for user
     public User getUser() {
-        return user;
+        return userR;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.userR = user;
     }
 
     // Getter and Setter for Book

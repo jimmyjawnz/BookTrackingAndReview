@@ -2,6 +2,7 @@ package com.jdpj.book.controllers;
 
 import com.jdpj.book.models.Book;
 import com.jdpj.book.models.BookList;
+import com.jdpj.book.models.ListToBook;
 import com.jdpj.book.services.BookListService;
 import com.jdpj.book.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,11 @@ public class BookListRestController {
         }
 
         return books;
+    }
+
+    @PostMapping("booksInList/{bookListId}")
+    public ListToBook addBookToList(@PathVariable int bookListId, @RequestBody Book book) {
+        return bookListService.saveBookToList(book, bookListId);
     }
 
 }
