@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Browse from './components/Browse';
 import './App.css';
-import BookDetails from './components/BookDetails'; // Add this import
+import BookDetails from './components/BookDetails'; 
 import UserProfile from './components/UserProfile';
 
 
