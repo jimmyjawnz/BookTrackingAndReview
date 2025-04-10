@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect, useState } from "react";
+
 
 
 
@@ -9,17 +11,18 @@ const BookListModal = ({
   onClose,
   newCategory,
   setNewCategory,
-  bookLists,
-  setBookLists,
+//   bookLists,
+//   setBookLists,
   selectedCategory,
   setSelectedCategory,
   bookData,
   setBookData
 }) => {
 
-
+const [bookLists, setBookLists] = useState([]);
 
 const currentUser = JSON.parse(localStorage.getItem('user'));
+
 
 const handleAddCategory = async () => {
   if (!newCategory || !currentUser) return;
@@ -49,6 +52,20 @@ const handleAddCategory = async () => {
   }
 };
 
+
+useEffect(() => {
+  const fetchBookLists = async () => {
+    try {
+      const response = await fetch("http://localhost:8081/api/bookLists");
+      const data = await response.json();
+      setBookLists(data); // Update your state
+    } catch (err) {
+      console.error("Failed to fetch book lists:", err);
+    }
+  };
+
+  fetchBookLists();
+}, []);
 
   return (
     <div className="fixed inset-0 bg-grey bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50">

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import BookListModal from './BookListModal';
+
 
 const BookDetails = () => {
   const { id } = useParams();

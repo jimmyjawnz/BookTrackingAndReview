@@ -4,9 +4,10 @@ import com.jdpj.book.models.Book;
 import com.jdpj.book.models.BookList;
 import com.jdpj.book.models.ListToBook;
 import com.jdpj.book.services.BookListService;
-import com.jdpj.book.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.jdpj.book.dto.BookListdto;
+
 
 import java.util.List;
 
@@ -21,14 +22,24 @@ public class BookListRestController {
     }
 
     @GetMapping("/bookLists")
-    public List<BookList> findAll() {
-        return bookListService.findAll();
+    public List<BookListdto> findAll() {
+        return bookListService.findAll().stream()
+                .map(bookList -> new BookListdto(
+                        bookList.getId(),
+                        bookList.getName(),
+                        bookList.getVisibility(),
+                        bookList.getUser().getId()
+                ))
+                .toList();
     }
+
 
     @GetMapping("/bookLists/{bookListId}")
     public BookList getBookList(@PathVariable int bookListId) {
 
         BookList bookList = bookListService.findById(bookListId);
+        System.out.println(bookListService.findAll());
+
 
         if (bookList == null) {
             throw new RuntimeException("BookList id not found - " + bookListId);
