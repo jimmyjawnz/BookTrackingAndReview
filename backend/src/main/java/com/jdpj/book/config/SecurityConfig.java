@@ -33,15 +33,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) // Enable CORS with default settings
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/signin", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/").authenticated()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // Permits all http requests regardless of authorization
                 )
-                .formLogin(form -> form
-                        .loginPage("/signin") // Optional: custom login page
-                        .defaultSuccessUrl("/", true) // Redirect after successful login
-                        .permitAll()
-                )
+                .formLogin(Customizer.withDefaults())
                 .build(); // Build the security filter chain
     }
 

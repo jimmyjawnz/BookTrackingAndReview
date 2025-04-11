@@ -1,43 +1,57 @@
 package com.jdpj.book.models;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name="users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Primary key userid is auto generated
     @Column(name="userid")
     private int id;
 
+    // Optional username
     @Nullable
     @Column(name="username")
     private String userName;
 
+    // Required password, stored hashed in the database
     @Column(name="password")
     private String password;
 
+    // Required email
     @Column(name="email")
     private String email;
 
+    // Grabs a list of users that this user has added as friends
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Friend> listFriends = new ArrayList<>();
 
+    // Grabs a list of users who have added this user as a friend
     @OneToMany(mappedBy = "friend", fetch = FetchType.LAZY)
     private List<Friend> listFriended = new ArrayList<>();
 
+    // Grabs a list of book lists created by this user
     @OneToMany(mappedBy = "userBL", fetch = FetchType.LAZY)
     private List<BookList> listBookLists = new ArrayList<>();
 
+    // List of reviews written by this user
     @OneToMany(mappedBy = "userR", fetch = FetchType.LAZY)
     private List<Review> listReviews = new ArrayList<>();
 
-    // define getter/setters
+    // define getter/setters for all fields
     public int getId() {
         return id;
     }
@@ -102,6 +116,7 @@ public class User {
     public User() {
     }
 
+    // All-Arg constructor excluding the auto generated ID
     public User(String userName, String password, String email, List<Friend> friends, List<BookList> booklists, List<Review> reviews) {
         this.userName = userName;
         this.password = password;
