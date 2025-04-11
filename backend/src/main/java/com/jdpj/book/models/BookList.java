@@ -1,25 +1,34 @@
 package com.jdpj.book.models;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
-
 import java.util.List;
 
+import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name="booklists")
+@Table(name="booklists") // Maps the entity to the booklists table in the database
 public class BookList {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increments the id value
     @Column(name="booklistid")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // Many book lists can belong to one user
     @JoinColumn(name = "userid")
     private User userBL;
 
     @Nullable
-    @Column(name="name")
+    @Column(name="name") // Optional name for the book list
     private String name;
 
     // Null -> Private | 0 -> Friends | 1 -> Public
@@ -28,6 +37,7 @@ public class BookList {
     private boolean visibility;
 
     @OneToMany(mappedBy = "booklist", fetch = FetchType.LAZY)
+    // One book list can contain multiple books
     private List<ListToBook> listToBooks;
 
     // constructors

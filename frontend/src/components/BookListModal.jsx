@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
+// Component to manage a modal that allows users to view, create, and interact with book lists
 const BookListModal = ({
   onClose,
   book,
@@ -16,9 +17,11 @@ const BookListModal = ({
 
 //keeps track of the state of user and books
 const [bookLists, setBookLists] = useState([]);
+
+// Retrieve the current user from local storage
 const currentUser = JSON.parse(localStorage.getItem('user'));
 
-//create new category
+//create new book list category
 const handleAddCategory = async () => {
   if (!newCategory || !currentUser) return;
 
@@ -62,7 +65,7 @@ useEffect(() => {
   fetchBookLists();
 }, []);
 
-//takes the selected category and fetches books within it
+// takes the selected category and fetches books within it
 const handleSelectCategory = async (category) => {
   setSelectedCategory(category);
 

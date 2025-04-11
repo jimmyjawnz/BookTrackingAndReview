@@ -1,5 +1,6 @@
 package com.jdpj.book.dto;
 
+// DTO used to transfer simplified book list data
 public class BookListdto {
 
     private int id;
@@ -7,6 +8,7 @@ public class BookListdto {
     private boolean visibility;
     private int userId;
 
+    // Constructor to initialize all the fields
     public BookListdto(int id, String name, boolean visibility, int userId) {
         this.id = id;
         this.name = name;
